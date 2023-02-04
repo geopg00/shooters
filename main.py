@@ -11,6 +11,7 @@ def file_path(fail_name):
 FPS = 40
 WIN_WIDTH = 900
 WIN_HEIGHT = 500
+WHITE = (255,255,255)
 
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
@@ -50,18 +51,27 @@ class Enemy(GameSprite):
         super().__init__(image, x, y, width, height, speed)
 
     def update(self):
+        global missed_enemis
         self.rect.y += self.speed
         if self.rect.y >= WIN_HEIGHT:
             self.rect.bottom = 0
             self.rect.x = randint(0, WIN_WIDTH - self.rect.width)
+            self.speed = randint(1,4)
+            missed_enemis += 1
 
-player = Player("rocket.png",425, 400, 70, 70, 8)
+player = Player("rocket.png",425, 400, 70, 70, 10)
 
 enemies = pygame.sprite.Group()
 
 for i in range(5):
-    enemy = Enemy(file_path("aliens.png"),randint(0, WIN_WIDTH - 50),0, 50, 50, 4)
+    enemy = Enemy(file_path("aliens.png"),randint(0, WIN_WIDTH - 50),0, 50, 50, randint(1,4))
     enemies.add(enemy)
+
+missed_enemis = 0
+killed_enemis = 0
+font = pygame.font.SysFont("areal", 25)
+txt_missed = font.render("Пропущенно: "+ str(missed_enemis),True, WHITE)
+txt_killed = font.render("Вбито: "+ str(killed_enemis),True, WHITE)
 
 play = True
 game = True
@@ -72,6 +82,12 @@ while game == True:
             game = False
     if play == True:
         window.blit(background, (0,0))
+        
+        txt_missed = font.render("Пропущенно: "+ str(missed_enemis),True, WHITE)
+        txt_killed = font.render("Вбито: "+ str(killed_enemis),True, WHITE)
+
+        window.blit(txt_missed,(5,5))
+        window.blit(txt_killed,(5,32))
 
         player.reset()
         player.update()
