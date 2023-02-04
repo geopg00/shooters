@@ -16,6 +16,17 @@ WHITE = (255,255,255)
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
 
+pygame.mixer.music.load(file_path("music.mp3"))
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
+
+music_win = pygame.mixer.Sound(file_path("win.wav"))
+music_lose = pygame.mixer.Sound(file_path("lose.wav"))
+music_shoot = pygame.mixer.Sound(file_path("fair.wav"))
+music_bum = pygame.mixer.Sound(file_path("bum.wav"))
+music_pass = pygame.mixer.Sound(file_path("pass.wav"))
+
+
 background = pygame.image.load(file_path("sky.jpg"))
 background = pygame.transform.scale(background,(WIN_WIDTH,WIN_HEIGHT))
 
@@ -63,8 +74,8 @@ player = Player("rocket.png",425, 400, 70, 70, 10)
 
 enemies = pygame.sprite.Group()
 
-for i in range(5):
-    enemy = Enemy(file_path("aliens.png"),randint(0, WIN_WIDTH - 50),0, 50, 50, randint(1,4))
+for i in range(8):
+    enemy = Enemy(file_path("aliens.png"),randint(0, WIN_WIDTH - 90),0, 90, 90, randint(1,4))
     enemies.add(enemy)
 
 missed_enemis = 0
